@@ -1,6 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 import { IUser } from '../interfaces/user.interface';
 import { Exclude } from 'class-transformer';
+import { ICredential } from '../interfaces/credential.interface';
+import { Credential } from './credential.entity';
 
 @Entity({ name: 'users' })
 export class User implements IUser {
@@ -36,6 +44,7 @@ export class User implements IUser {
     nullable: false,
   })
   login: string;
+
   constructor(partial: Partial<User>) {
     Object.assign(this, partial);
   }

@@ -1,14 +1,17 @@
 import {
   Body,
   Controller,
-  Get, Param, ParseIntPipe,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
   Post,
-  Put
-} from "@nestjs/common";
+  Put,
+} from '@nestjs/common';
 import { UserCreateDTO, UserDTO, UserUpdateDTO } from './dto/user.dto';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
-import { UpdateResult } from "typeorm";
+import { UpdateResult } from 'typeorm';
 
 @Controller('user')
 export class UserController {
@@ -27,15 +30,14 @@ export class UserController {
 
   @Put(':id')
   async updateUser(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() user: UserUpdateDTO,
   ): Promise<UpdateResult> {
-    console.log(id);
     return this.userService.update(Number(id), user);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return `This action returns a #${id} cat`;
+  @Delete(':id')
+  delete(@Param('id', ParseIntPipe) id: number): Promise<UpdateResult> {
+    return this.userService.delete(id);
   }
 }

@@ -23,4 +23,8 @@ export class UserService {
   update(id: IUser['id'], user: Partial<User>): Promise<UpdateResult> {
     return this.usersRepository.update({ id }, user);
   }
+
+  delete(id: IUser['id']): Promise<UpdateResult> {
+    return this.usersRepository.update({ id }, { deleteDate: Date.now() });
+  }
 }
