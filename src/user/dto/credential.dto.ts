@@ -9,8 +9,7 @@ import {
   IsString,
 } from 'class-validator';
 
-import { Credential } from '../entities/credential.entity';
-import { PickType, OmitType } from '@nestjs/mapped-types';
+import { PickType } from '@nestjs/mapped-types';
 
 export class CredentialDTO {
   @IsInt()
