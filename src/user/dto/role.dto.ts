@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsBoolean,
   IsDate,
   IsEmail,
@@ -11,8 +12,9 @@ import {
 
 import { PickType } from '@nestjs/mapped-types';
 import { IRole } from '../interfaces/role.interface';
+import { IRule } from '../interfaces/rule.inerface';
 
-export class RoleDTO implements IRole {
+export class RoleDTO implements Omit<IRole, 'rules'> {
   @IsInt()
   @IsNotEmpty()
   id;
@@ -37,3 +39,13 @@ export class RoleCreateDTO extends PickType(RoleDTO, [
 export class RoleDeleteDTO extends PickType(RoleDTO, ['id'] as const) {}
 
 export class RoleUpdateDTO extends RoleDTO {}
+
+export class RoleAddRulesDTO {
+  @IsInt()
+  @IsNotEmpty()
+  id: IRole['id'];
+
+  @IsArray()
+  @IsNotEmpty()
+  rulesId: IRule['id'][];
+}

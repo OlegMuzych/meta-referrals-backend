@@ -10,7 +10,12 @@ import {
 } from '@nestjs/common';
 
 import { RoleService } from '../services/role.service';
-import { RoleCreateDTO, RoleDeleteDTO, RoleUpdateDTO } from '../dto/role.dto';
+import {
+  RoleAddRulesDTO,
+  RoleCreateDTO,
+  RoleDeleteDTO,
+  RoleUpdateDTO,
+} from '../dto/role.dto';
 import { RoleEntity } from '../entities/role.entity';
 
 @Controller('role')
@@ -51,6 +56,16 @@ export class RoleController {
   async delete(@Body() role: RoleDeleteDTO): Promise<boolean> {
     const { id } = role;
     const { state, message } = await this.roleService.delete(id);
+    if (state) {
+      return state;
+    } else {
+      throw new HttpException(message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Post('addrules')
+  async addRules(@Body() body: RoleAddRulesDTO): Promise<boolean> {
+    const { state, message } = await this.roleService.addRules(body);
     if (state) {
       return state;
     } else {

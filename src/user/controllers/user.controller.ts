@@ -8,9 +8,9 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { UserCreateDTO, UserDTO, UserUpdateDTO } from './dto/user.dto';
-import { UserService } from './user.service';
-import { User } from './entities/user.entity';
+import { UserCreateDTO, UserDTO, UserUpdateDTO } from '../dto/user.dto';
+import { UserService } from '../services/user.service';
+import { User } from '../entities/user.entity';
 import { UpdateResult } from 'typeorm';
 
 @Controller('user')

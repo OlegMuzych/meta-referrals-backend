@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserController } from '../user/user.controller';
+import { UserController } from '../user/controllers/user.controller';
 import { UserModule } from '../user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { configLoads } from '../config';
 import { PostgreSqlConfigService } from '../database/database.service';
-import { UserService } from '../user/user.service';
+import { UserService } from '../user/services/user.service';
 
 const modules = [UserModule];
 
