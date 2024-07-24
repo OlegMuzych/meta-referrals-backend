@@ -12,15 +12,14 @@ import { rulesSeeds } from '../seeds/rule.seeds';
 import { rolesSeeds } from '../seeds/role.seeds';
 import { IRule } from '../interfaces/rule.inerface';
 import { RuleEntity } from '../entities/rule.entity';
+import { RuleService } from './rule.service';
 
 @Injectable()
 export class RoleService {
   constructor(
     @InjectRepository(RoleEntity)
     private roleRepository: Repository<RoleEntity>,
-
-    @InjectRepository(RuleEntity)
-    private ruleRepository: Repository<RuleEntity>,
+    private ruleService: RuleService,
   ) {}
 
   async findAll(): Promise<IResponseFromService<RoleEntity[]>> {
@@ -60,11 +59,7 @@ export class RoleService {
     rulesId,
   }: RoleAddRulesDTO): Promise<IResponseFromService> {
     try {
-      const rules: RuleEntity[] = [];
-      for (const item of rulesId) {
-        const rule = await this.ruleRepository.findOneBy({ id: item });
-        rules.push(rule);
-      }
+      const rules = await this.ruleService.findByIds(rulesId);
       const role = await this.roleRepository.findOneBy({ id });
       role.rules = [...rules];
       await this.roleRepository.save(role);
@@ -72,6 +67,15 @@ export class RoleService {
     } catch (error) {
       Logger.error(`Error seeding role: ${error.message}`, error.stack);
     }
+  }
+
+  async findByIds(ids: IRole['id'][]): Promise<RoleEntity[]> {
+    const roles: RoleEntity[] = [];
+    for (const item of ids) {
+      const rule = await this.roleRepository.findOneBy({ id: item });
+      roles.push(rule);
+    }
+    return roles;
   }
 
   async seedData(): Promise<void> {

@@ -3,11 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RuleEntity } from '../entities/rule.entity';
 import { rulesSeeds } from '../seeds/rule.seeds';
-import { RoleEntity } from '../entities/role.entity';
 import {
   createResponse,
   IResponseFromService,
 } from '../interfaces/errors.type';
+import { IRule } from '../interfaces/rule.inerface';
 
 @Injectable()
 export class RuleService {
@@ -19,6 +19,16 @@ export class RuleService {
     const data = await this.ruleRepository.find();
     return createResponse<RuleEntity[]>({ data });
   }
+
+  async findByIds(ids: IRule['id'][]): Promise<RuleEntity[]> {
+    const rules: RuleEntity[] = [];
+    for (const item of ids) {
+      const rule = await this.ruleRepository.findOneBy({ id: item });
+      rules.push(rule);
+    }
+    return rules;
+  }
+
   async seedData(): Promise<void> {
     try {
       for (const item of rulesSeeds) {

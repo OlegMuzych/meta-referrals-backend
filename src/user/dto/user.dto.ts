@@ -1,7 +1,9 @@
 import {
+  IsArray,
   IsBoolean,
   IsDate,
   IsEmail,
+  IsInt,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -10,6 +12,9 @@ import {
 
 import { OmitType } from '@nestjs/swagger';
 import { User } from '../entities/user.entity';
+import { IRole } from '../interfaces/role.interface';
+import { IRule } from '../interfaces/rule.inerface';
+import { IUser } from '../interfaces/user.interface';
 
 export class UserDTO extends User {
   @IsNumber()
@@ -53,3 +58,23 @@ export class UserUpdateDTO extends OmitType(UserDTO, [
   'isActive',
   'id',
 ]) {}
+
+export class UserAddRulesDTO {
+  @IsInt()
+  @IsNotEmpty()
+  id: IUser['id'];
+
+  @IsArray()
+  @IsNotEmpty()
+  rulesId: IRule['id'][];
+}
+
+export class UserAddRolesDTO {
+  @IsInt()
+  @IsNotEmpty()
+  id: IUser['id'];
+
+  @IsArray()
+  @IsNotEmpty()
+  rolesId: IRole['id'][];
+}

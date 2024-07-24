@@ -1,3 +1,6 @@
+import { IRule } from './rule.inerface';
+import { IRole } from './role.interface';
+
 export interface IUser {
   id: number;
   avatar: string;
@@ -13,4 +16,6 @@ export interface IUser {
   login: string;
 
   name: string;
+  rules: IRule[];
+  roles: IRole[];
 }
