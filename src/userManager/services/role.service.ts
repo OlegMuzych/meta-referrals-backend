@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import {
   createResponse,
   IResponseFromService,
-} from '../interfaces/errors.type';
+} from '../utilits/response.utils';
 import { RoleEntity } from '../entities/role.entity';
 import { RoleAddRulesDTO, RoleCreateDTO } from '../dto/role.dto';
 import { IRole } from '../interfaces/role.interface';

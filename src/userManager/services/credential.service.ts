@@ -8,7 +8,12 @@ import {
   CredentialUpdateDTO,
 } from '../dto/credential.dto';
 import { HashUtils } from '../utilits/hash.utils';
-import { ResponseType } from '../interfaces/errors.type';
+import {
+  createResponse,
+  IResponseFromService,
+  ResponseType,
+} from '../utilits/response.utils';
+import { RoleEntity } from '../entities/role.entity';
 
 @Injectable()
 export class CredentialsService {
@@ -16,7 +21,9 @@ export class CredentialsService {
     @InjectRepository(Credential)
     private credentialRepository: Repository<Credential>,
   ) {}
-  async create(credential: CredentialCreateDTO): Promise<ResponseType<string>> {
+  async create(
+    credential: CredentialCreateDTO,
+  ): Promise<IResponseFromService<boolean>> {
     const { userId, newPassword } = credential;
     const exist = await this.credentialRepository.exists({
       where: {
@@ -24,10 +31,10 @@ export class CredentialsService {
       },
     });
     if (exist) {
-      return {
+      return createResponse({
         state: false,
         message: 'Credential already exist',
-      };
+      });
     }
     const passwordHash = await HashUtils.create(newPassword);
     const cred = await this.credentialRepository.create({
@@ -35,28 +42,28 @@ export class CredentialsService {
       userId,
     });
     await this.credentialRepository.save(cred);
-    return {
-      state: true,
-    };
+    return createResponse();
   }
 
-  async update(credential: CredentialUpdateDTO): Promise<ResponseType<string>> {
+  async update(
+    credential: CredentialUpdateDTO,
+  ): Promise<IResponseFromService<boolean>> {
     const { userId, newPassword, oldPassword } = credential;
     const exist = await this.credentialRepository.existsBy({ userId });
     if (!exist) {
-      return {
+      return createResponse({
         state: false,
         message: 'Credential not exist',
-      };
+      });
     }
     const cred = await this.credentialRepository.findOneBy({ userId });
     const { passwordHash } = cred;
     const flag = await HashUtils.compare(oldPassword, passwordHash);
     if (!flag) {
-      return {
+      return createResponse({
         state: false,
         message: 'Incorrect current password',
-      };
+      });
     }
     const newPasswordHash = await HashUtils.create(newPassword);
     const newCred = await this.credentialRepository.update(
@@ -66,10 +73,12 @@ export class CredentialsService {
       },
     );
     // await this.credentialRepository.save(newCred);
-    return { state: true };
+    return createResponse();
   }
 
-  async delete(credential: CredentialDeleteDTO): Promise<ResponseType<string>> {
+  async delete(
+    credential: CredentialDeleteDTO,
+  ): Promise<IResponseFromService<boolean>> {
     const { userId } = credential;
     const exist = await this.credentialRepository.exists({
       where: {
@@ -79,8 +88,8 @@ export class CredentialsService {
     if (exist) {
       await this.credentialRepository.delete({ userId });
     } else {
-      return { state: false, message: 'Credential not exist' };
+      return createResponse({ state: false, message: 'Credential not exist' });
     }
-    return { state: true };
+    return createResponse();
   }
 }

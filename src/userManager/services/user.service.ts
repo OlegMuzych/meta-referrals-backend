@@ -7,10 +7,11 @@ import { UserAddRolesDTO, UserAddRulesDTO } from '../dto/user.dto';
 import {
   createResponse,
   IResponseFromService,
-} from '../interfaces/errors.type';
+} from '../utilits/response.utils';
 
 import { RuleService } from './rule.service';
 import { RoleService } from './role.service';
+import { usersSeeds } from '../seeds/user.seeds';
 
 @Injectable()
 export class UserService {
@@ -67,6 +68,24 @@ export class UserService {
       return createResponse();
     } catch (error) {
       Logger.error(`Error user add roles: ${error.message}`, error.stack);
+    }
+  }
+
+  async seedData(): Promise<void> {
+    try {
+      for (const item of usersSeeds) {
+        const exist = await this.userRepository.existsBy({
+          login: item.login,
+        });
+        if (!exist) {
+          await this.create(item);
+        } else {
+          await this.userRepository.update({ login: item.login }, item);
+        }
+      }
+      Logger.log('User seeded successfully');
+    } catch (error) {
+      Logger.error(`Error seeding user: ${error.message}`, error.stack);
     }
   }
 }

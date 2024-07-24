@@ -25,12 +25,14 @@ import { RuleController } from './controllers/rule.controller';
     RuleController,
   ],
 })
-export class UserModule {
+export class UserManagerModule {
   constructor(
     private readonly ruleService: RuleService,
     private readonly roleService: RoleService,
+    private readonly userService: UserService,
   ) {
     this.ruleService.seedData().then();
     this.roleService.seedData().then();
+    this.userService.seedData().then();
   }
 }

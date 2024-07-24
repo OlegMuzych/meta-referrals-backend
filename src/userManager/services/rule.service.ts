@@ -6,7 +6,7 @@ import { rulesSeeds } from '../seeds/rule.seeds';
 import {
   createResponse,
   IResponseFromService,
-} from '../interfaces/errors.type';
+} from '../utilits/response.utils';
 import { IRule } from '../interfaces/rule.inerface';
 
 @Injectable()
