@@ -25,18 +25,13 @@ export class UserService {
   async findAll(): Promise<IResponseFromService<UserEntity[]>> {
     try {
       const users = await this.userRepository.find({
-        relations: { roles: { rules: true }, rules: true },
+        relations: { roles: { rules: true }, rules: true, credential: true },
       });
       return createResponse({ state: true, data: users });
     } catch (error) {
       Logger.error(`Not get users: ${error.message}`, error.stack);
     }
   }
-
-  // create(user: Partial<UserEntity>): Promise<UserEntity> {
-  //   const newUser = this.userRepository.create(user);
-  //   return this.userRepository.save(newUser);
-  // }
 
   async create(
     user: Partial<UserEntity>,
@@ -50,9 +45,6 @@ export class UserService {
     }
   }
 
-  // update(id: IUser['id'], user: Partial<UserEntity>): Promise<UpdateResult> {
-  //   return this.userRepository.update({ id }, user);
-  // }
   async update(
     id: IUser['id'],
     user: Partial<UserEntity>,
@@ -64,10 +56,6 @@ export class UserService {
       Logger.error(`Not update user: ${error.message}`, error.stack);
     }
   }
-
-  // delete(id: IUser['id']): Promise<UpdateResult> {
-  //   return this.userRepository.update({ id }, { deleteDate: Date.now() });
-  // }
 
   async delete(id: IUser['id']): Promise<IResponseFromService<UpdateResult>> {
     // try {
@@ -91,6 +79,24 @@ export class UserService {
       user.rules = [...rules];
       await this.userRepository.save(user);
       return createResponse();
+    } catch (error) {
+      Logger.error(`Error user add rules: ${error.message}`, error.stack);
+    }
+  }
+
+  async getByLogin(
+    login: IUser['login'],
+  ): Promise<IResponseFromService<UserEntity>> {
+    try {
+      const user = await this.userRepository.findOne({
+        where: { login },
+        relations: { roles: { rules: true }, rules: true, credential: true },
+      });
+      if (!user) {
+        return createResponse({ state: false, message: 'User not exist' });
+      }
+      Logger.debug(user);
+      return createResponse({ state: true, data: user });
     } catch (error) {
       Logger.error(`Error user add rules: ${error.message}`, error.stack);
     }

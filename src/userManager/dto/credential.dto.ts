@@ -4,7 +4,7 @@ import { PickType } from '@nestjs/swagger';
 import { ApiProperty } from '@nestjs/swagger';
 import { ICredential } from '../interfaces/credential.interface';
 
-export class CredentialDTO implements ICredential {
+export class CredentialDTO implements Pick<ICredential, 'id' | 'userId'> {
   @IsInt()
   @IsNotEmpty()
   @ApiProperty()
@@ -14,8 +14,6 @@ export class CredentialDTO implements ICredential {
   @IsNotEmpty()
   @ApiProperty()
   userId: ICredential['userId'];
-  passwordHash;
-  salt;
 }
 
 export class CredentialCreateDTO extends PickType(CredentialDTO, [

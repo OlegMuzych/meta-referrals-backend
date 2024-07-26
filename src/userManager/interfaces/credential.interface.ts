@@ -6,4 +6,5 @@ export interface ICredential {
 
   passwordHash: string;
   salt: string;
+  password: string;
 }

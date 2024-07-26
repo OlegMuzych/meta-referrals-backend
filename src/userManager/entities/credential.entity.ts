@@ -11,14 +11,14 @@ import { IUser } from '../interfaces/user.interface';
 import { UserEntity } from './user.entity';
 
 @Entity({ name: 'credentials' })
-export class Credential implements ICredential {
+export class CredentialEntity implements Omit<ICredential, 'password'> {
   @Exclude()
   @PrimaryGeneratedColumn()
   id: number;
 
   @Exclude()
   @Column({ type: 'integer', nullable: false })
-  @OneToOne(() => UserEntity)
+  @OneToOne(() => UserEntity, (user) => user.credential)
   @JoinColumn()
   userId: IUser['id'];
 
@@ -30,7 +30,7 @@ export class Credential implements ICredential {
   @Column({ type: 'text', nullable: true })
   salt: string;
 
-  constructor(partial: Partial<Credential>) {
+  constructor(partial: Partial<CredentialEntity>) {
     Object.assign(this, partial);
   }
 }

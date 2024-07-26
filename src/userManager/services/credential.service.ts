@@ -1,7 +1,7 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
-import { Credential } from '../entities/credential.entity';
+import { CredentialEntity } from '../entities/credential.entity';
 import {
   CredentialCreateDTO,
   CredentialDeleteDTO,
@@ -16,8 +16,8 @@ import {
 @Injectable()
 export class CredentialsService {
   constructor(
-    @InjectRepository(Credential)
-    private credentialRepository: Repository<Credential>,
+    @InjectRepository(CredentialEntity)
+    private credentialRepository: Repository<CredentialEntity>,
   ) {}
   async create(
     credential: CredentialCreateDTO,

@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToMany,
   JoinTable,
+  OneToOne,
 } from 'typeorm';
 import { IUser } from '../interfaces/user.interface';
 import { Exclude } from 'class-transformer';
@@ -12,6 +13,8 @@ import { RuleEntity } from './rule.entity';
 import { IRule } from '../interfaces/rule.inerface';
 import { IRole } from '../interfaces/role.interface';
 import { RoleEntity } from './role.entity';
+import { ICredential } from '../interfaces/credential.interface';
+import { CredentialEntity } from './credential.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity implements IUser {
@@ -55,6 +58,10 @@ export class UserEntity implements IUser {
   @ManyToMany(() => RoleEntity)
   @JoinTable()
   roles: IRole[];
+
+  @Exclude({ toPlainOnly: true })
+  @OneToOne(() => CredentialEntity, (credential) => credential.userId)
+  credential: ICredential;
 
   constructor(partial: Partial<UserEntity>) {
     Object.assign(this, partial);
