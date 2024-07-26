@@ -6,8 +6,22 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { configLoads } from '../config';
 import { PostgreSqlConfigService } from '../database/database.service';
+import { RouterModule } from '@nestjs/core';
 
-const modules = [UserManagerModule];
+const modules = [
+  UserManagerModule,
+  RouterModule.register([
+    {
+      path: 'api',
+      children: [
+        {
+          path: 'usermanager',
+          module: UserManagerModule,
+        },
+      ],
+    },
+  ]),
+];
 
 export const global_modules = [
   ConfigModule.forRoot({
