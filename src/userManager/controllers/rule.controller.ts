@@ -1,7 +1,9 @@
 import { Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
 import { RuleService } from '../services/rule.service';
 import { RuleEntity } from '../entities/rule.entity';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('rule')
 @Controller('rule')
 export class RuleController {
   constructor(private readonly ruleService: RuleService) {}

@@ -14,13 +14,13 @@ import {
   UserAddRolesDTO,
   UserAddRulesDTO,
   UserCreateDTO,
-  UserDTO,
   UserUpdateDTO,
 } from '../dto/user.dto';
 import { UserService } from '../services/user.service';
 import { UserEntity } from '../entities/user.entity';
-import { UpdateResult } from 'typeorm';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('user')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}

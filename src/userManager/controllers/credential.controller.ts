@@ -14,7 +14,8 @@ import {
   CredentialUpdateDTO,
 } from '../dto/credential.dto';
 import { CredentialsService } from '../services/credential.service';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('credential')
 @Controller('credential')
 export class CredentialController {
   constructor(private readonly credentialService: CredentialsService) {}

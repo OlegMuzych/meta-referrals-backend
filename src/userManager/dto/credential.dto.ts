@@ -1,24 +1,21 @@
-import {
-  IsBoolean,
-  IsDate,
-  IsEmail,
-  IsInt,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsInt, IsNotEmpty, IsString } from 'class-validator';
 
-import { PickType } from '@nestjs/mapped-types';
+import { PickType } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
+import { ICredential } from '../interfaces/credential.interface';
 
-export class CredentialDTO {
+export class CredentialDTO implements ICredential {
   @IsInt()
   @IsNotEmpty()
-  id;
+  @ApiProperty()
+  id: ICredential['id'];
 
   @IsInt()
   @IsNotEmpty()
-  userId;
+  @ApiProperty()
+  userId: ICredential['userId'];
+  passwordHash;
+  salt;
 }
 
 export class CredentialCreateDTO extends PickType(CredentialDTO, [
@@ -26,6 +23,7 @@ export class CredentialCreateDTO extends PickType(CredentialDTO, [
 ] as const) {
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   newPassword: string;
 }
 
@@ -36,5 +34,6 @@ export class CredentialDeleteDTO extends PickType(CredentialDTO, [
 export class CredentialUpdateDTO extends CredentialCreateDTO {
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   oldPassword: string;
 }

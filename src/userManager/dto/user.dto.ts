@@ -10,7 +10,7 @@ import {
   IsString,
 } from 'class-validator';
 
-import { OmitType } from '@nestjs/swagger';
+import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { UserEntity } from '../entities/user.entity';
 import { IRole } from '../interfaces/role.interface';
 import { IRule } from '../interfaces/rule.inerface';
@@ -19,34 +19,42 @@ import { IUser } from '../interfaces/user.interface';
 export class UserDTO extends UserEntity {
   @IsNumber()
   @IsNotEmpty()
+  @ApiProperty()
   id: number;
 
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   login: string;
 
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   name: string;
 
   @IsEmail()
   @IsOptional()
+  @ApiProperty()
   email: string;
 
   @IsString()
   @IsOptional()
+  @ApiProperty()
   description: string;
 
   @IsBoolean()
   @IsOptional()
+  @ApiProperty()
   isActive: boolean;
 
   @IsDate()
   @IsOptional()
+  @ApiProperty()
   deleteDate: Date;
 
   @IsString()
   @IsOptional()
+  @ApiProperty()
   avatar: string;
 }
 
@@ -62,19 +70,23 @@ export class UserUpdateDTO extends OmitType(UserDTO, [
 export class UserAddRulesDTO {
   @IsInt()
   @IsNotEmpty()
+  @ApiProperty()
   id: IUser['id'];
 
   @IsArray()
   @IsNotEmpty()
+  @ApiProperty()
   rulesId: IRule['id'][];
 }
 
 export class UserAddRolesDTO {
   @IsInt()
   @IsNotEmpty()
+  @ApiProperty()
   id: IUser['id'];
 
   @IsArray()
   @IsNotEmpty()
+  @ApiProperty()
   rolesId: IRole['id'][];
 }
