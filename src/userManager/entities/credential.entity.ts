@@ -8,7 +8,7 @@ import {
 import { Exclude } from 'class-transformer';
 import { ICredential } from '../interfaces/credential.interface';
 import { IUser } from '../interfaces/user.interface';
-import { User } from './user.entity';
+import { UserEntity } from './user.entity';
 
 @Entity({ name: 'credentials' })
 export class Credential implements ICredential {
@@ -18,7 +18,7 @@ export class Credential implements ICredential {
 
   @Exclude()
   @Column({ type: 'integer', nullable: false })
-  @OneToOne(() => User)
+  @OneToOne(() => UserEntity)
   @JoinColumn()
   userId: IUser['id'];
 

@@ -18,7 +18,7 @@ import {
   UserUpdateDTO,
 } from '../dto/user.dto';
 import { UserService } from '../services/user.service';
-import { User } from '../entities/user.entity';
+import { UserEntity } from '../entities/user.entity';
 import { UpdateResult } from 'typeorm';
 
 @Controller('user')
@@ -26,27 +26,46 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  async addUser(@Body() user: UserCreateDTO): Promise<User> {
-    return new User(await this.userService.create(user));
+  async addUser(@Body() user: UserCreateDTO): Promise<UserEntity> {
+    const { state, message, data } = await this.userService.create(user);
+    if (state) {
+      return new UserEntity(data);
+    } else {
+      throw new HttpException(message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Get()
-  async getUsers(): Promise<User[]> {
-    const users = await this.userService.findAll();
-    return users.map((item) => new User(item));
+  async getUsers(): Promise<UserEntity[]> {
+    const { state, message, data } = await this.userService.findAll();
+    if (state) {
+      return data.map((item) => new UserEntity(item));
+    } else {
+      throw new HttpException(message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Put(':id')
   async updateUser(
     @Param('id', ParseIntPipe) id: number,
     @Body() user: UserUpdateDTO,
-  ): Promise<UpdateResult> {
-    return this.userService.update(Number(id), user);
+  ): Promise<boolean> {
+    const { state, message } = await this.userService.update(Number(id), user);
+    if (state) {
+      return state;
+    } else {
+      throw new HttpException(message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: number): Promise<UpdateResult> {
-    return this.userService.delete(id);
+  async delete(@Param('id', ParseIntPipe) id: number): Promise<boolean> {
+    const { state, message } = await this.userService.delete(id);
+    if (state) {
+      return state;
+    } else {
+      throw new HttpException(message, HttpStatus.BAD_REQUEST);
+    }
   }
   @Post('addrules')
   async addRules(@Body() body: UserAddRulesDTO): Promise<boolean> {

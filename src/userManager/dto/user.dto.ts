@@ -11,12 +11,12 @@ import {
 } from 'class-validator';
 
 import { OmitType } from '@nestjs/swagger';
-import { User } from '../entities/user.entity';
+import { UserEntity } from '../entities/user.entity';
 import { IRole } from '../interfaces/role.interface';
 import { IRule } from '../interfaces/rule.inerface';
 import { IUser } from '../interfaces/user.interface';
 
-export class UserDTO extends User {
+export class UserDTO extends UserEntity {
   @IsNumber()
   @IsNotEmpty()
   id: number;

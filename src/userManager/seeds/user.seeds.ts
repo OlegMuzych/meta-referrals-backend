@@ -1,6 +1,6 @@
-import { User } from '../entities/user.entity';
+import { UserEntity } from '../entities/user.entity';
 
-export const usersSeeds: User[] = [
+export const usersSeeds: UserEntity[] = [
   //todo: брать данные из .env
   {
     id: 1,
@@ -10,4 +10,4 @@ export const usersSeeds: User[] = [
     isActive: true,
     password: '1234',
   },
-].map((item) => new User(item));
+].map((item) => new UserEntity(item));

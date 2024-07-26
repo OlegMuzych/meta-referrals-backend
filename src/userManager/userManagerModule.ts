@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { UserController } from './controllers/user.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
 import { UserService } from './services/user.service';
 import { CredentialController } from './controllers/credential.controller';
 import { CredentialsService } from './services/credential.service';
@@ -15,7 +15,7 @@ import { RuleController } from './controllers/rule.controller';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Credential, RoleEntity, RuleEntity]),
+    TypeOrmModule.forFeature([UserEntity, Credential, RoleEntity, RuleEntity]),
   ],
   providers: [UserService, CredentialsService, RoleService, RuleService],
   controllers: [

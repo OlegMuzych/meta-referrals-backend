@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../entities/user.entity';
+import { UserEntity } from '../entities/user.entity';
 import { Repository, UpdateResult } from 'typeorm';
 import { IUser } from '../interfaces/user.interface';
 import { UserAddRolesDTO, UserAddRulesDTO } from '../dto/user.dto';
@@ -16,29 +16,69 @@ import { usersSeeds } from '../seeds/user.seeds';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
     private ruleService: RuleService,
     private roleService: RoleService,
   ) {}
 
-  findAll(): Promise<User[]> {
-    return this.userRepository.find({
-      relations: { roles: { rules: true }, rules: true },
-    });
+  async findAll(): Promise<IResponseFromService<UserEntity[]>> {
+    try {
+      const users = await this.userRepository.find({
+        relations: { roles: { rules: true }, rules: true },
+      });
+      return createResponse({ state: true, data: users });
+    } catch (error) {
+      Logger.error(`Not get users: ${error.message}`, error.stack);
+    }
   }
 
-  create(user: Partial<User>): Promise<User> {
-    const newUser = this.userRepository.create(user);
-    return this.userRepository.save(newUser);
+  // create(user: Partial<UserEntity>): Promise<UserEntity> {
+  //   const newUser = this.userRepository.create(user);
+  //   return this.userRepository.save(newUser);
+  // }
+
+  async create(
+    user: Partial<UserEntity>,
+  ): Promise<IResponseFromService<UserEntity>> {
+    try {
+      let newUser = await this.userRepository.create(user);
+      newUser = await this.userRepository.save(newUser);
+      return createResponse({ state: true, data: newUser });
+    } catch (error) {
+      Logger.error(`Not create user: ${error.message}`, error.stack);
+    }
   }
 
-  update(id: IUser['id'], user: Partial<User>): Promise<UpdateResult> {
-    return this.userRepository.update({ id }, user);
+  // update(id: IUser['id'], user: Partial<UserEntity>): Promise<UpdateResult> {
+  //   return this.userRepository.update({ id }, user);
+  // }
+  async update(
+    id: IUser['id'],
+    user: Partial<UserEntity>,
+  ): Promise<IResponseFromService<UpdateResult>> {
+    try {
+      const result = await this.userRepository.update({ id }, user);
+      return createResponse({ state: true, data: result });
+    } catch (error) {
+      Logger.error(`Not update user: ${error.message}`, error.stack);
+    }
   }
 
-  delete(id: IUser['id']): Promise<UpdateResult> {
-    return this.userRepository.update({ id }, { deleteDate: Date.now() });
+  // delete(id: IUser['id']): Promise<UpdateResult> {
+  //   return this.userRepository.update({ id }, { deleteDate: Date.now() });
+  // }
+
+  async delete(id: IUser['id']): Promise<IResponseFromService<UpdateResult>> {
+    // try {
+    const result = await this.userRepository.update(
+      { id },
+      { deleteDate: new Date(Date.now()) },
+    );
+    return createResponse({ state: true, data: result });
+    // } catch (error) {
+    //   Logger.error(`Not soft delete user: ${error.message}`, error.stack);
+    // }
   }
 
   async addRules({

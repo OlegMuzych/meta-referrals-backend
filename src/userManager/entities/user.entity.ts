@@ -2,22 +2,19 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
-  JoinColumn,
   ManyToMany,
   JoinTable,
 } from 'typeorm';
 import { IUser } from '../interfaces/user.interface';
 import { Exclude } from 'class-transformer';
-import { ICredential } from '../interfaces/credential.interface';
-import { Credential } from './credential.entity';
+
 import { RuleEntity } from './rule.entity';
 import { IRule } from '../interfaces/rule.inerface';
 import { IRole } from '../interfaces/role.interface';
 import { RoleEntity } from './role.entity';
 
 @Entity({ name: 'users' })
-export class User implements IUser {
+export class UserEntity implements IUser {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -59,7 +56,7 @@ export class User implements IUser {
   @JoinTable()
   roles: IRole[];
 
-  constructor(partial: Partial<User>) {
+  constructor(partial: Partial<UserEntity>) {
     Object.assign(this, partial);
   }
 }

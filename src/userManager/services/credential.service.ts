@@ -11,9 +11,7 @@ import { HashUtils } from '../utilits/hash.utils';
 import {
   createResponse,
   IResponseFromService,
-  ResponseType,
 } from '../utilits/response.utils';
-import { RoleEntity } from '../entities/role.entity';
 
 @Injectable()
 export class CredentialsService {

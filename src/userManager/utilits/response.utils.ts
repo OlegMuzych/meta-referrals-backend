@@ -1,8 +1,3 @@
-export type ResponseType<T> = {
-  state: boolean;
-  message?: 'error' | 'success' | T;
-};
-
 export interface IResponseFromService<T = null> {
   state: boolean;
   message: string;
