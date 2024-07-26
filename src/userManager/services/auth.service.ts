@@ -9,10 +9,7 @@ import {
   createResponse,
   IResponseFromService,
 } from '../utilits/response.utils';
-import { LoginEntity } from '../entities/login.entity';
 import { HashUtils } from '../utilits/hash.utils';
-import { JwtService } from '@nestjs/jwt';
-import { UserDTO } from '../dto/user.dto';
 
 @Injectable()
 export class AuthService {
@@ -24,7 +21,7 @@ export class AuthService {
     private userService: UserService,
   ) {}
 
-  async login({
+  async signIn({
     login,
     password,
   }: LoginDTO): Promise<IResponseFromService<UserEntity>> {
@@ -53,9 +50,6 @@ export class AuthService {
         message: 'Incorrect password',
       });
     }
-    // Logger.debug(JSON.stringify(new UserEntity(user)));
-    // const payload = { sub: new UserEntity(user) };
-    // const token = await this.jwtService.signAsync(payload);
     return createResponse({
       state: true,
       data: user,

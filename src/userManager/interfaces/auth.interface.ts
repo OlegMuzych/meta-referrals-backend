@@ -1,6 +1,6 @@
 import { IUser } from './user.interface';
 
-export interface ILogin {
+export interface IAuth {
   login: IUser['login'];
   password: string;
   token: string;
