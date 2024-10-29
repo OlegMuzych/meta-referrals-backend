@@ -1,9 +1,9 @@
 import { UserEntity } from '../entities/user.entity';
+import { IUserManager } from '../interfaces/user-manager.interface';
 
-export const usersSeeds: UserEntity[] = [
+export const usersSeeds: IUserManager[] = [
   //todo: брать данные из .env
   {
-    id: 1,
     name: 'admin',
     login: 'admin',
     description: 'Dafault User',

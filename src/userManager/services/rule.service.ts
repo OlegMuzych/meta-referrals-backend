@@ -29,9 +29,9 @@ export class RuleService {
     return rules;
   }
 
-  async seedData(): Promise<void> {
+  async seedData(rules: Partial<IRule>[]): Promise<void> {
     try {
-      for (const item of rulesSeeds) {
+      for (const item of rules) {
         const exist = await this.ruleRepository.existsBy({ name: item.name });
         if (!exist) {
           await this.ruleRepository.save(item);

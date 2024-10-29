@@ -16,6 +16,10 @@ import { AuthService } from './services/auth.service';
 import { AuthController } from './controllers/auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtConfigService } from './services/jwt.config.service';
+import { rulesSeeds } from './seeds/rule.seeds';
+import { IRule } from './interfaces/rule.inerface';
+import { UserManagerService } from './services/user-manager.service';
+import { usersSeeds } from './seeds/user.seeds';
 
 @Module({
   imports: [
@@ -41,6 +45,7 @@ import { JwtConfigService } from './services/jwt.config.service';
     RoleService,
     RuleService,
     AuthService,
+    UserManagerService,
   ],
   controllers: [
     UserController,
@@ -55,9 +60,14 @@ export class UserManagerModule {
     private readonly ruleService: RuleService,
     private readonly roleService: RoleService,
     private readonly userService: UserService,
+    private readonly userManagerService: UserManagerService,
   ) {
-    this.ruleService.seedData().then();
+    this.ruleService.seedData(rulesSeeds).then();
     this.roleService.seedData().then();
-    this.userService.seedData().then();
+    // this.userService.seedData().then();
+    this.userManagerService.seedUsers(usersSeeds).then();
+    this.userManagerService
+      .seedRootUser({ id: 1, login: 'root', password: 'root' })
+      .then();
   }
 }

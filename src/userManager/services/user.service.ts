@@ -117,21 +117,21 @@ export class UserService {
     }
   }
 
-  async seedData(): Promise<void> {
-    try {
-      for (const item of usersSeeds) {
-        const exist = await this.userRepository.existsBy({
-          login: item.login,
-        });
-        if (!exist) {
-          await this.create(item);
-        } else {
-          await this.userRepository.update({ login: item.login }, item);
-        }
-      }
-      Logger.log('User seeded successfully');
-    } catch (error) {
-      Logger.error(`Error seeding user: ${error.message}`, error.stack);
-    }
-  }
+  // async seedData(): Promise<void> {
+  //   try {
+  //     for (const item of usersSeeds) {
+  //       const exist = await this.userRepository.existsBy({
+  //         login: item.login,
+  //       });
+  //       if (!exist) {
+  //         await this.create(item);
+  //       } else {
+  //         // await this.userRepository.update({ login: item.login }, new (item));
+  //       }
+  //     }
+  //     Logger.log('User seeded successfully');
+  //   } catch (error) {
+  //     Logger.error(`Error seeding user: ${error.message}`, error.stack);
+  //   }
+  // }
 }
